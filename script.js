@@ -1,15 +1,18 @@
 let page = 1; // Página inicial
 let isLoading = false; // Bandera para evitar múltiples solicitudes
 
-function fetchCharacters() {
+function fetchCharacters(searchTerm = "") {
   if (isLoading) return;
 
   isLoading = true;
 
-  fetch(`https://rickandmortyapi.com/api/character?page=${page}`)
+  const url = `https://rickandmortyapi.com/api/character?page=${page}&name=${searchTerm}`;
+
+  fetch(url)
     .then((response) => response.json())
     .then((data) => {
       const characterContainer = document.getElementById("character-container");
+      characterContainer.innerHTML = ""; // Limpiar los personajes existentes
 
       // Iterar sobre los resultados y crear las tarjetas de personajes
       data.results.forEach((character) => {
@@ -58,6 +61,14 @@ window.addEventListener("scroll", () => {
 
 // Carga los personajes iniciales
 fetchCharacters();
+
+const searchInput = document.getElementById("search-input");
+
+searchInput.addEventListener("input", (event) => {
+  const searchTerm = event.target.value.trim();
+  page = 1; // Restablecer la página a 1 para la nueva búsqueda
+  fetchCharacters(searchTerm);
+});
 
 function showCharacterDetails(character) {
   // Crea el contenido HTML de la modal con la información del personaje
