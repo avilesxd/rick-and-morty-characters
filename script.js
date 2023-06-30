@@ -12,7 +12,6 @@ function fetchCharacters(searchTerm = "") {
     .then((response) => response.json())
     .then((data) => {
       const characterContainer = document.getElementById("character-container");
-      characterContainer.innerHTML = ""; // Limpiar los personajes existentes
 
       // Iterar sobre los resultados y crear las tarjetas de personajes
       data.results.forEach((character) => {
@@ -67,6 +66,8 @@ const searchInput = document.getElementById("search-input");
 searchInput.addEventListener("input", (event) => {
   const searchTerm = event.target.value.trim();
   page = 1; // Restablecer la página a 1 para la nueva búsqueda
+  const characterContainer = document.getElementById("character-container");
+  characterContainer.innerHTML = ""; // Limpiar los personajes existentes antes de la nueva búsqueda
   fetchCharacters(searchTerm);
 });
 
